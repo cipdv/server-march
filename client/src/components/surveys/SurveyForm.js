@@ -12,7 +12,7 @@ class SurveyForm extends React.Component {
                 <Field label="email title" type="text" name="title" component={SurveyField} />
                 <Field label="email subject" type="text" name="subject" component={SurveyField} />
                 <Field label="email body" type="text" name="body" component={SurveyField} />
-                <Field label="recipient list" type="text" name="emails" component={SurveyField} />
+                <Field label="recipient list" type="text" name="recipients" component={SurveyField} />
             </div>
         );
     }
@@ -20,7 +20,7 @@ class SurveyForm extends React.Component {
     render () {
         return (
             <div>
-                <form onSubmit={this.props.handleSubmit(values=>console.log(values))}> 
+                <form onSubmit={this.props.handleSubmit(this.props.onSurveySubmit)}> 
                     {this.renderFields()}
                     <Link  to="/surveys" className="red btn-flat white-text">Cancel</Link>                
                     <button type="submit" className="teal btn-flat right white-text">Next
@@ -35,7 +35,7 @@ class SurveyForm extends React.Component {
 function validate (values) {
     const errors = {};
 
-    errors.emails = validateEmails(values.emails || '');
+    errors.recipients = validateEmails(values.recipients || '');
 
     if (!values.title) {
         errors.title = 'you must provide a title';
@@ -52,6 +52,7 @@ function validate (values) {
 
 export default reduxForm({
     validate,
-    form: 'surveyForm'
+    form: 'surveyForm',
+    destroyOnUnmount: false
 })(SurveyForm);
 
